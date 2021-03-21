@@ -14,6 +14,16 @@ use yii\mongodb\ActiveRecord;
  */
 class Sector extends ActiveRecord
 {
+    public static function getDb()
+    {
+        return \Yii::$app->db;
+    }
+
+    public static function collectionName()
+    {
+        return 'sectors';
+    }
+
     public function attributes()
     {
         return [
@@ -37,6 +47,6 @@ class Sector extends ActiveRecord
      */
     public function getMapObjects()
     {
-        return $this->hasMany(MapObject::class, ['_sector_id' => '_id']);
+        return $this->hasMany(MapObject::class, ['sector_number' => 'number']);
     }
 }

@@ -9,7 +9,7 @@ use yii\mongodb\ActiveRecord;
  * Мета объект на карте
  *
  * @property  string $_id
- * @property string $_sector_id
+ * @property integer $sector_number
  * @property array $translation
  * @property array $rotation
  * @property array $scale
@@ -19,25 +19,35 @@ use yii\mongodb\ActiveRecord;
  */
 class MapObject extends ActiveRecord
 {
+    public static function getDb()
+    {
+        return \Yii::$app->db;
+    }
+
+    public static function collectionName()
+    {
+        return 'map_objects';
+    }
+
     public function attributes()
     {
         return [
             '_id',
-            '_sector_id',
+            'sector_number',
             'translation',
             'rotation',
             'scale',
             'reference'
         ];
-
-
     }
 
     public function rules()
     {
         return [
-            [['_id', '_sector_id', 'reference'], 'string'],
-            [['_sector_id'], 'exist', 'targetClass' => Sector::class, 'targetAttribute' => '_id'],
+            [['_id', 'reference'], 'string'],
+            [['sector_number'], 'integer'],
+            [['sector_number'], 'exist', 'targetRelation' => 'sector'],
+            [['translation', 'rotation', 'scale'], Vector3Validator::class],
             [['translation', 'rotation', 'scale'], Vector3Validator::class],
         ];
     }
@@ -47,6 +57,6 @@ class MapObject extends ActiveRecord
      */
     public function getSector()
     {
-        return $this->hasOne(Sector::class, ['_id' => '_sector_id']);
+        return $this->hasOne(Sector::class, ['number' => 'sector_number']);
     }
 }

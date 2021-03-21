@@ -45,11 +45,8 @@ $config = [
             ],
         ],
         'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-            'username' => 'root',
-            'password' => '',
-            'charset' => 'utf8',
+            'class' => \yii\mongodb\Connection::class,
+            'dsn' => 'mongodb://localhost/game?connectTimeoutMS=300000',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,

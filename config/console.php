@@ -1,8 +1,5 @@
 <?php
 
-$params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/db.php';
-
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
@@ -25,9 +22,12 @@ $config = [
                 ],
             ],
         ],
-        'db' => $db,
+        'db' => [
+            'class' => \yii\mongodb\Connection::class,
+            'dsn' => 'mongodb://localhost/game?connectTimeoutMS=300000',
+        ],
     ],
-    'params' => $params,
+    'params' => [],
     /*
     'controllerMap' => [
         'fixture' => [ // Fixture generation command line.
